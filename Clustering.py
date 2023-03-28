@@ -15,14 +15,20 @@ y = df['variety']
 scaler = StandardScaler()
 preprocessed_data = scaler.fit_transform(X)
 
+print("\nPreprocessed Data After Scaling:\n")
+print(preprocessed_data)
+print("\n")
+
 # separate the features and target variable into separate dataframes
 X = df.iloc[:, 1:5] # select columns 1 through 4 (the features)
 y = df.iloc[:, 5] # select column 5 (the target variable)
 
 # print the first 5 rows of the features dataframe
+print("\nThe Features:\n")
 print(X.head())
 
 # print the first 5 rows of the target variable dataframe
+print("\nThe Target Variable:\n")
 print(y.head())
 
 
@@ -41,9 +47,9 @@ plt.ylabel('WCSS')
 plt.show()
 
 optimal_num_clusters = int(input("Enter the optimal number of clusters: "))
-
+print("\n")
 print("The optimal number of clusters is:", optimal_num_clusters)
-
+print("\n")
 # Step 4: Apply k-means clustering method to the preprocessed data using the optimal number of clusters determined 
 
 kmeans2 = KMeans(n_clusters=optimal_num_clusters, init='k-means++', random_state=42)
@@ -51,13 +57,17 @@ kmeans.fit(preprocessed_data)
 cluster_labels = kmeans.labels_
 
 # Print the cluster labels
-print(kmeans.labels_)
+print("\nCluster KMeans Labels:\n")
+print(kmeans.labels_) # each point in dataset assign it to cluster label
+print("\nThe Length are:\n")
+print(len(kmeans.labels_))
+print("\n")
 
 print(preprocessed_data[:, 1])
 plt.scatter(preprocessed_data[:, 0], preprocessed_data[:, 1], c=cluster_labels, cmap='viridis')
 plt.title('K-means Clustering')
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 1')
+plt.xlabel('sepalLength')
+plt.ylabel('sepalWidth')
 plt.show()
 
 #Feature 1 & 2
@@ -66,11 +76,13 @@ plt.show()
 
 #///////////////DBSCAN Method////////////////////////////////////
 
-dbscan = DBSCAN(eps=0.5, min_samples=5)
+dbscan = DBSCAN(eps=0.5, min_samples=5) 
+#eps: radius of each neighborhood around a point
+#min_samples: sets the minimum number of points required in a neighborhood for it to be considered a core point
 dbscan_labels = dbscan.fit_predict(preprocessed_data)
 
 # plot the clusters
 plt.scatter(preprocessed_data[:, 0], preprocessed_data[:, 1], c=dbscan_labels )
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 2')
+plt.xlabel('sepalLength')
+plt.ylabel('sepalWidth')
 plt.show()
