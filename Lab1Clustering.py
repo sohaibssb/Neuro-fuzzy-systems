@@ -74,20 +74,25 @@ print(final_df)
 # We will use the within-cluster sum of squares (wcss) as the evaluation metric
 wcss = [] 
 
-# for i in range(2, 11):
-#     kmeans = KMeans(n_clusters=i, init='k-means++', random_state=42)  #k-means++' is a popular method for initializing the centroids to help avoid poor convergence of the clustering algorithm.
-#     kmeans.fit(preprocessed_data)
-#     wcss.append(kmeans.inertia_)
-# plt.plot(range(2, 11), wcss)
-# plt.title('Elbow Method')
-# plt.xlabel('Number of clusters')
-# plt.ylabel('WCSS')
-# plt.show()
+
+for i in range(2, 11):
+        kmeans = KMeans(n_clusters=i, init='k-means++', random_state=42)  #k-means++' is a popular method for initializing the centroids to help avoid poor convergence of the clustering algorithm.
+        kmeans.fit(preprocessed_data)
+        wcss.append(kmeans.inertia_)
+
+plt.plot(range(2, 11), wcss)
+plt.title('Elbow Method')
+plt.xlabel('Number of clusters')
+plt.ylabel('WCSS')
+plt.show()
+
 
 kmeans = KMeans(n_clusters=3) 
 kmeans.fit(preprocessed_data) 
 df['kmeans']=kmeans.labels_ 
 plt.scatter(preprocessed_data[:, 0], preprocessed_data[:, 1],c= df['kmeans'])
+
+
 
 optimal_num_clusters = int(input("Enter the optimal number of clusters: "))
 print("\n")
