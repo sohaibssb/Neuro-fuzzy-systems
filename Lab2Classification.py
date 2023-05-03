@@ -69,10 +69,6 @@ print("\n")
 
 
 
-
-
-
-
 #iris data set:
 '''
 import pandas as pd
@@ -154,21 +150,21 @@ from sklearn.model_selection import cross_val_score
 
 #Train and evaluate classifiers
 regression_scores = cross_val_score(regression, X_train, y_train, cv=5)
-print("Cross-validation regression_scores:", regression_scores)
+print("Cross-validation regression_scores:\n", regression_scores)
 # print("Average score:", regression_scores.mean())
 # print("Standard deviation:", regression_scores.std())
 
 knn_scores = cross_val_score(knn, X_train, y_train, cv=5)
-print("Cross-validation knn_scores:", knn_scores)
+print("\nCross-validation knn_scores:\n", knn_scores)
 
 decision_tree_scores = cross_val_score(decision_tree, X_train, y_train, cv=5)
-print("Cross-validation decision_tree_scores:", decision_tree_scores)
+print("\nCross-validation decision_tree_scores:\n", decision_tree_scores)
 
 random_forest_scores = cross_val_score(random_forest, X_train, y_train, cv=5)
-print("Cross-validation random_forest_scores:", random_forest_scores)
+print("\nCross-validation random_forest_scores:\n", random_forest_scores)
 
 boosting_scores = cross_val_score(boosting, X_train, y_train, cv=5)
-print("Cross-validation boosting_scores:", boosting_scores)
+print("\nCross-validation boosting_scores:\n", boosting_scores)
 #cross-validation (CV) is a technique for evaluating how well a trained model can generalize to new, unseen data
 #cv=5 means that the dataset will be divided into 5 folds
 
@@ -262,40 +258,40 @@ from sklearn.model_selection import cross_val_score
 
 #regression
 scores = cross_val_score(regression, X_train, y_train, cv=10)
-print("Cross-validation scores - regression:", scores)
+print("Cross-validation scores - regression:\n", scores)
 plt.plot(np.arange(1, 11), scores, '-o')
 plt.xlabel('Cross-validation fold')
 plt.ylabel('Accuracy')
 plt.title('Cross-validation scores - regression')
 plt.show()
-
+print("\n")
 #k-nearest neighbors
 scores = cross_val_score(knn, X_train, y_train, cv=10)
-print("Cross-validation scores - k-nearest neighbors:", scores)
+print("Cross-validation scores - k-nearest neighbors:\n", scores)
 plt.plot(np.arange(1, 11), scores, '-o')
 plt.xlabel('Cross-validation fold')
 plt.ylabel('Accuracy')
 plt.title('Cross-validation scores - k-nearest neighbors')
 plt.show()
-
+print("\n")
 #decision_tree
 scores = cross_val_score(decision_tree, X_train, y_train, cv=10)
-print("Cross-validation scores - decision_tree:", scores)
+print("Cross-validation scores - decision_tree:\n", scores)
 plt.plot(np.arange(1, 11), scores, '-o')
 plt.xlabel('Cross-validation fold')
 plt.ylabel('Accuracy')
 plt.title('Cross-validation scores - decision_tree')
 plt.show()
-
+print("\n")
 #random_forest
 scores = cross_val_score(random_forest, X_train, y_train, cv=10)
-print("Cross-validation scores - random_forest:", scores)
+print("Cross-validation scores - random_forest:\n", scores)
 plt.plot(np.arange(1, 11), scores, '-o')
 plt.xlabel('Cross-validation fold')
 plt.ylabel('Accuracy')
 plt.title('Cross-validation scores - random_forest')
 plt.show()
-
+print("\n")
 #boosting
 scores = cross_val_score(boosting, X_train, y_train, cv=10)
 print("Cross-validation scores - boosting:", scores)
@@ -304,7 +300,7 @@ plt.xlabel('Cross-validation fold')
 plt.ylabel('Accuracy')
 plt.title('Cross-validation scores - boosting')
 plt.show()
-
+print("\n")
 
 #/////////////////////////////////////////////////////////////
 #grid search to tune the hyperparameters of the random forest classifier:
@@ -313,18 +309,36 @@ from sklearn.model_selection import GridSearchCV
 
 #Regression
 #parameter grid
-param_grid = {'C': [0.001, 0.01, 0.1, 1, 10, 100]}
+# param_grid = {'C': [0.001, 0.01, 0.1, 1, 10, 100]}
+# param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]}
+# param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]}
+param_grid = {'C': [0.1, 0.5, 1, 5, 10, 50]}
+# param_grid = {'C': np.logspace(-3, 3, 7)}
 lr = LogisticRegression()
 #grid search with 5-fold cross-validation
-grid_search = GridSearchCV(lr, param_grid, cv=5)
+grid_search = GridSearchCV(lr, param_grid, cv=5) #cv=5
 grid_search.fit(X_train, y_train)
 print("\nRegression")
 print("Best hyperparameters: ", grid_search.best_params_)
 print("Accuracy score: ", grid_search.best_score_)
 print("\n")
+#///////////////Test/////////////////////
+import matplotlib.pyplot as plt
+# extract results of grid search
+# c_values = [0.1, 0.5, 1, 5, 10, 50]
+c_values = [0.00001, 0.0001, 0.1, 1, 10, 100]
+scores = grid_search.cv_results_['mean_test_score']
+# plot results
+plt.plot(c_values, scores, '-o')
+plt.xscale('log')
+plt.xlabel('C value')
+plt.ylabel('Cross-validation score')
+plt.title('Grid search results')
+plt.show()
+#////////////////////////////////////////
 
-#k-nearest neighbors
-param_grid = {'n_neighbors': [1, 3, 5, 7, 9],
+#k-nearest neighbors [1, 3, 5, 7, 9]
+param_grid = {'n_neighbors': [3, 5, 7, 9, 11],
               'weights': ['uniform', 'distance'],
               'metric': ['euclidean', 'manhattan']}
 lr = KNeighborsClassifier()
@@ -335,13 +349,16 @@ print("Best hyperparameters: ", grid_search.best_params_)
 print("Accuracy score: ", grid_search.best_score_)
 print("\n")
 
-#decision_tree
+#decision_tree max_depth [2, 5, 10, None]
 param_grid = {
     'criterion': ['gini', 'entropy'],
-    'max_depth': [2, 5, 10, None],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
+    'max_depth': [3, 5, 10, None],
+    'min_samples_split': [5, 8, 10],
+    'min_samples_leaf': [3, 4, 6]
 }
+#   'min_samples_split': [2, 5, 10],
+#     'min_samples_leaf': [1, 2, 4]
+
 lr = DecisionTreeClassifier()
 grid_search = GridSearchCV(lr, param_grid, cv=5)
 grid_search.fit(X_train, y_train)
