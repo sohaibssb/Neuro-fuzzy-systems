@@ -16,3 +16,6 @@ vectorize texts using two methods:
 - static or contextualized vector models.
 The resulting text vectors must either be clustered. On the resulting clusters, it is necessary to train the clustering method and check the accuracy of its work.
 It is necessary to compare the accuracy of the method with and without the use of morphological analysis.
+
+Lab#4: Dense Neural Networks
+Train the perceptron on one of the sets used above data and compare the accuracy of its work with previously used methods.
