@@ -1,5 +1,7 @@
 # Neuro-fuzzy-systems
-# Programmed by Sohaibssb for Neuro-fuzzy-systems Course at Bauman University, start 6/4/2023
+Clustering, Classification & Deep Learning Labs
+
+Programmed by Sohaibssb for Neuro-fuzzy-systems Course at Bauman University. 2023.
 
 Lab#1: Clustering, feature space dimensionality reduction
 k-means method and DBSCAN method
